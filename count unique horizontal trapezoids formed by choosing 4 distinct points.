@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int countTrapezoids(vector<vector<int>>& points) {
+        const long long MOD = 1e9 + 7;
+        unordered_map<int, long long> freq;
+        
+        // Group points by y-coordinate
+        for (auto &p : points) {
+            freq[p[1]]++;
+        }
+        
+        long long total = 0, sumSquares = 0;
+        
+        for (auto &[y, cnt] : freq) {
+            if (cnt >= 2) {
+                long long ways = (cnt * (cnt - 1LL)) / 2;
+                total = (total + ways) % MOD;
+                sumSquares = (sumSquares + (ways * ways) % MOD) % MOD;
+            }
+        }
+        
+        // (total^2 - sumSquares) / 2
+        long long ans = ( ( (total * total) % MOD - sumSquares + MOD ) % MOD ) * ((MOD + 1) / 2) % MOD;
+        
+        return (int)ans;
+    }
+};
